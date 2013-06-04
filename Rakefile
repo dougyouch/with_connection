@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "with_connection"
   gem.homepage = "http://github.com/dyouch5@yahoo.com/with_connection"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Generic connection pool for fibers and threads}
+  gem.description = %Q{Uses active record connection pool logic with the fiber_patch}
   gem.email = "doug@sessionm.com"
   gem.authors = ["Doug Youch"]
   # dependencies defined in Gemfile
@@ -32,14 +32,6 @@ Rake::TestTask.new(:test) do |test|
   test.verbose = true
 end
 
-require 'rcov/rcovtask'
-Rcov::RcovTask.new do |test|
-  test.libs << 'test'
-  test.pattern = 'test/**/test_*.rb'
-  test.verbose = true
-  test.rcov_opts << '--exclude "gems/*"'
-end
-
 task :default => :test
 
 require 'rdoc/task'
@@ -47,7 +39,7 @@ Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "with_connection #{version}"
+  rdoc.title = "sized_list #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end

@@ -1,3 +1,5 @@
+require "active_record/connection_adapters/abstract/connection_pool"
+
 module WithConnection
   class ConnectionPool < ActiveRecord::ConnectionAdapters::ConnectionPool
     attr_reader :name

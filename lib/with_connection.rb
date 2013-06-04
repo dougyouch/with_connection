@@ -1,7 +1,1 @@
-require 'rails/all'
-
-module WithConnection
-  extend ActiveSupport::Autoload
-
-  autoload :ConnectionPool
-end
+require 'with_connection/connection_pool'

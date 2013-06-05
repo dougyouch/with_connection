@@ -114,6 +114,21 @@ module ActiveRecord
         end
       end
 
+      def valid_busy_fiber?
+        ActiveRecord::ConnectionAdapters.fiber_pools.any? do |pool|
+          pool.busy_fibers[current_connection_id]
+        end
+      end
+
+      def connection_with_sanity_check
+        raise "not a busy fiber" if EM.reactor_running? && ! valid_busy_fiber?
+        connection_without_sanity_check
+      end
+
+      unless Rails.env == 'production'
+        alias_method_chain :connection, :sanity_check
+      end
+
       private
 
       def current_connection_id #:nodoc:

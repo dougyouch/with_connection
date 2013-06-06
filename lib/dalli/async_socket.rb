@@ -2,6 +2,7 @@ require 'timeout'
 
 module Dalli
   class Server
+    # from thrift_cliet-0.8.2/lib/thrift_client/event_machine.rb
     module EventMachineConnection
       GARBAGE_BUFFER_SIZE = 4096 # 4kB
 

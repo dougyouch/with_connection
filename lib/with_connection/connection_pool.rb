@@ -54,7 +54,7 @@ module WithConnection
           else
             clear_stale_cached_connections!
             if @size == @checked_out.size
-              raise ConnectionTimeoutError, "could not obtain a #{name} connection#{" within #{@timeout} seconds" if @timeout}.  The max pool size is currently #{@size}; consider increasing it."
+              raise ActiveRecord::ConnectionTimeoutError, "could not obtain a #{name} connection#{" within #{@timeout} seconds" if @timeout}.  The max pool size is currently #{@size}; consider increasing it."
             end
           end
 

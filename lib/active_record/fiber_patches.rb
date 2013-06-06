@@ -11,9 +11,9 @@ module ActiveRecord
     end
 
     class FiberedMonitor
-      attr_accessor :name
-
       class Queue
+        attr_accessor :name
+
         def initialize
           @queue = []
         end

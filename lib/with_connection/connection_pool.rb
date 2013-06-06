@@ -35,6 +35,33 @@ module WithConnection
       release_connection
     end
 
+    # copied directly from the ActiveRecord just so I could change the error message
+    def checkout
+      # Checkout an available connection
+      @connection_mutex.synchronize do
+        loop do
+          conn = if @checked_out.size < @connections.size
+                   checkout_existing_connection
+                 elsif @connections.size < @size
+                   checkout_new_connection
+                 end
+          return conn if conn
+
+          @queue.wait(@timeout)
+
+          if(@checked_out.size < @connections.size)
+            next
+          else
+            clear_stale_cached_connections!
+            if @size == @checked_out.size
+              raise ConnectionTimeoutError, "could not obtain a #{name} connection#{" within #{@timeout} seconds" if @timeout}.  The max pool size is currently #{@size}; consider increasing it."
+            end
+          end
+
+        end
+      end
+    end
+
     private
     def new_connection
       spec.adapter_method.call spec.config

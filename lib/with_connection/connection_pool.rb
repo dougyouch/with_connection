@@ -5,8 +5,8 @@ module WithConnection
     attr_reader :name
 
     def initialize(name, spec)
-      super spec
       @name = name
+      super spec
       @disable_warning = !! spec.config[:disable_warning]
       @debug_with_connection = !! spec.config[:debug_with_connection]
       ConnectionManagement.connection_pools << self
@@ -26,7 +26,12 @@ module WithConnection
       if @debug_with_connection && ! @using_with_connection
         Rails.logger.warn "#{name} not using with_connection, backtrace: #{caller.inspect}"
       end
-      checkout_without_debug
+
+      begin
+        checkout_without_debug
+      rescue ActiveRecord::ConnectionTimeoutError => e
+        raise ActiveRecord::ConnectionTimeoutError, "could not obtain a #{name} connection#{" within #{@timeout} seconds" if @timeout}.  The max pool size is currently #{@size}; consider increasing it."
+      end
     end
     alias_method_chain :checkout, :debug
 
@@ -35,32 +40,6 @@ module WithConnection
       release_connection
     end
 
-    # copied directly from the ActiveRecord just so I could change the error message
-    def checkout
-      # Checkout an available connection
-      @connection_mutex.synchronize do
-        loop do
-          conn = if @checked_out.size < @connections.size
-                   checkout_existing_connection
-                 elsif @connections.size < @size
-                   checkout_new_connection
-                 end
-          return conn if conn
-
-          @queue.wait(@timeout)
-
-          if(@checked_out.size < @connections.size)
-            next
-          else
-            clear_stale_cached_connections!
-            if @size == @checked_out.size
-              raise ActiveRecord::ConnectionTimeoutError, "could not obtain a #{name} connection#{" within #{@timeout} seconds" if @timeout}.  The max pool size is currently #{@size}; consider increasing it."
-            end
-          end
-
-        end
-      end
-    end
 
     private
     def new_connection

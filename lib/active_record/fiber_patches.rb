@@ -17,15 +17,17 @@ module ActiveRecord
         end
 
         def wait(timeout)
-          t = timeout || 5
-          fiber = Fiber.current
-          x = EM::Timer.new(t) do
-            @queue.delete(fiber)
-            fiber.resume(false)
-          end
-          @queue << fiber
-          Fiber.yield.tap do
-            x.cancel
+          ActiveSupport::Notifications.instrument("wait.connection_pool", :resource => self.name) do |payload|
+            t = timeout || 5
+            fiber = Fiber.current
+            x = EM::Timer.new(t) do
+              @queue.delete(fiber)
+              fiber.resume(false)
+            end
+            @queue << fiber
+            Fiber.yield.tap do
+              x.cancel
+            end
           end
         end
 

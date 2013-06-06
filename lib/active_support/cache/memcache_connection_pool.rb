@@ -9,31 +9,31 @@ module ActiveSupport
 
       def fetch(name, options=nil)
         with_connection do
-          connection.fetch name, options
+          options ? connection.fetch(name, options) : connection.fetch(name)
         end
       end
 
       def read(name, options=nil)
         with_connection do
-          connection.read name, options
+          options ? connection.read(name, options) : connection.read(name)
         end
       end
 
       def write(name, value, options=nil)
         with_connection do
-          connection.write name, value, options
+          options ? connection.write(name, value, options) : connection.write(name, value)
         end
       end
 
       def exist?(name, options=nil)
         with_connection do
-          connection.exist? name, options
+          options ? connection.exist?(name, options) : connection.exist?(name)
         end
       end
 
       def delete(name, options=nil)
         with_connection do
-          connection.delete name, options
+          options ? connection.delete(name, options) : connection.delete(name)
         end
       end
 
@@ -45,13 +45,13 @@ module ActiveSupport
 
       def increment(name, amount = 1, options=nil)
         with_connection do
-          connection.increment name, amount, options
+          options ? connection.increment(name, amount, options) : connection.increment(name, amount)
         end
       end
 
       def decrement(name, amount = 1, options=nil)
         with_connection do
-          connection.decrement name, amount, options
+          options ? connection.decrement(name, amount, options) : connection.decrement(name, amount)
         end
       end
 

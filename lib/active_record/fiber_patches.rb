@@ -62,7 +62,7 @@ module ActiveRecord
         # The mutex used to synchronize pool access
         @connection_mutex = FiberedMonitor.new
         @queue = @connection_mutex.new_cond
-        @queue.name = @name
+        @queue.name = @name || 'database'
 
         # default 5 second timeout unless on ruby 1.9
         @timeout = spec.config[:wait_timeout] || 5

@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "with_connection"
-  s.version = "0.1.10"
+  s.version = "0.1.11"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Doug Youch"]
@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
     "lib/active_record/fiber_patches/log_subscriber.rb",
     "lib/active_support/cache/features/adapter_methods.rb",
     "lib/active_support/cache/memcache_connection_pool.rb",
+    "lib/dalli/async_socket.rb",
     "lib/with_connection.rb",
     "lib/with_connection/connection_pool.rb",
     "with_connection.gemspec"

@@ -40,6 +40,9 @@ module WithConnection
       release_connection
     end
 
+    def create_all_connections
+      @size.times { @connections << new_connection }
+    end
 
     private
     def new_connection

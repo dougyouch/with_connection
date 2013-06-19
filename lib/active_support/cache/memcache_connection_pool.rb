@@ -62,8 +62,6 @@ module ActiveSupport
       end
       alias clear reset
 
-      private
-
       if defined?(EM)
         def sync_connection_pool
           @sync_connection_pool ||=

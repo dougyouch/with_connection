@@ -22,7 +22,7 @@ module WithConnection
       key = self.key_algo.call(key) if key
       key.nil? ?
       @default_pool : 
-        (@list.detect { |item| item.include?(key) } || @default_pool)
+        (@list.detect { |item| item.include?(key) }.try(:pool) || @default_pool)
     end
 
     def local_current

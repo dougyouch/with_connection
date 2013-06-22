@@ -9,7 +9,13 @@ module WithConnection
     end
 
     def with_connection(key=nil, &block)
-      pool_for_key(key).with_connection(&block)
+      local_current[:pool] = pool_for_key(key)
+      local_current[:pool].with_connection(&block)
+    end
+
+    def connection
+      local_current[:pool] ||= @default_pool
+      local_current[:pool].connection
     end
 
     def pool_for_key(key)
@@ -17,6 +23,10 @@ module WithConnection
       key.nil? ?
       @default_pool : 
         (@list.detect { |item| item.include?(key) } || @default_pool)
+    end
+
+    def local_current
+      defined?(EM) && EM.reactor_running? ? Fiber.current : Thread.current
     end
 
     class Item

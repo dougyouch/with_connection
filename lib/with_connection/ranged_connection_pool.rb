@@ -29,6 +29,11 @@ module WithConnection
       defined?(EM) && EM.reactor_running? ? Fiber.current : Thread.current
     end
 
+    def create_all_connections
+      @default_pool.create_all_connections
+      @list.each { |item| item.pool.create_all_connections }
+    end
+
     class Item
       attr_reader :range, :pool
 

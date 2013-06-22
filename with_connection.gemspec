@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "with_connection"
-  s.version = "0.1.14"
+  s.version = "0.1.15"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Doug Youch"]
-  s.date = "2013-06-19"
+  s.date = "2013-06-22"
   s.description = "Uses active record connection pool logic with the fiber_patch"
   s.email = "doug@sessionm.com"
   s.extra_rdoc_files = [
@@ -32,6 +32,7 @@ Gem::Specification.new do |s|
     "lib/dalli/async_socket.rb",
     "lib/with_connection.rb",
     "lib/with_connection/connection_pool.rb",
+    "lib/with_connection/ranged_connection_pool.rb",
     "with_connection.gemspec"
   ]
   s.homepage = "http://github.com/dyouch5@yahoo.com/with_connection"

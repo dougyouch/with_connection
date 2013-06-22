@@ -9,13 +9,13 @@ module WithConnection
     end
 
     def with_connection(key=nil, &block)
-      local_current[:pool] = pool_for_key(key)
-      local_current[:pool].with_connection(&block)
+      local_current[:with_connection_ranged_connection_pool] = pool_for_key(key)
+      local_current[:with_connection_ranged_connection_pool].with_connection(&block)
     end
 
     def connection
-      local_current[:pool] ||= @default_pool
-      local_current[:pool].connection
+      local_current[:with_connection_ranged_connection_pool] ||= @default_pool
+      local_current[:with_connection_ranged_connection_pool].connection
     end
 
     def pool_for_key(key)

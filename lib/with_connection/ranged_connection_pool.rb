@@ -8,17 +8,18 @@ module WithConnection
       @key_algo = key_algo
     end
 
-    def with_connection(key=nil, &block)
-      local_current[:with_connection_ranged_connection_pool] = pool_for_key(key)
-      local_current[:with_connection_ranged_connection_pool].with_connection(&block)
+    def with_connection(key=nil, read_write=nil, &block)
+      local_current[:with_connection_ranged_connection_pool] = pool_for_key(key, read_write)
+      local_current[:with_connection_ranged_connection_pool].with_connection(key, read_write, &block)
+    ensure
+      local_current[:with_connection_ranged_connection_pool] = nil
     end
 
     def connection
-      local_current[:with_connection_ranged_connection_pool] ||= @default_pool
-      local_current[:with_connection_ranged_connection_pool].connection
+      local_current[:with_connection_ranged_connection_pool].try(:connection) || @default_pool.connection
     end
 
-    def pool_for_key(key)
+    def pool_for_key(key, read_write)
       key = self.key_algo.call(key) if key
       key.nil? ?
       @default_pool : 

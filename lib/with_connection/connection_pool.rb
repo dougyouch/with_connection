@@ -16,9 +16,17 @@ module WithConnection
       !! @reserved_connections[current_connection_id]
     end
 
-    def with_connection_with_debug(&block)
+    def with_connection(key=nil, read_write=nil)
+      connection_id = current_connection_id
+      fresh_connection = true unless @reserved_connections[connection_id]
+      yield connection
+    ensure
+      release_connection(connection_id) if fresh_connection
+    end
+
+    def with_connection_with_debug(key=nil, read_write=nil, &block)
       @using_with_connection = true
-      with_connection_without_debug(&block).tap { @using_with_connection = false }
+      with_connection_without_debug(key, read_write, &block).tap { @using_with_connection = false }
     end
     alias_method_chain :with_connection, :debug
 

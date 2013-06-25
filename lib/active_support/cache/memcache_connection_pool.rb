@@ -55,9 +55,9 @@ module ActiveSupport
         end
       end
 
-      def reset(options={})
+      def reset(options=nil)
         with_connection do
-          connection.reset options
+          options ? connection.reset(options) : connection.reset
         end
       end
       alias clear reset

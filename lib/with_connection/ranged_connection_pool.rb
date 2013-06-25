@@ -35,6 +35,11 @@ module WithConnection
       @list.each { |item| item.pool.create_all_connections }
     end
 
+    def disconnect!
+      @default_pool.disconnect!
+      @list.each { |item| item.pool.disconnect! }
+    end
+
     class Item
       attr_reader :range, :pool
 

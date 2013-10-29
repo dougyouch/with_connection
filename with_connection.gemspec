@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "with_connection"
-  s.version = "0.1.24"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Doug Youch"]
-  s.date = "2013-10-10"
+  s.date = "2013-10-29"
   s.description = "Uses active record connection pool logic with the fiber_patch"
   s.email = "doug@sessionm.com"
   s.extra_rdoc_files = [
@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
     "VERSION",
     "lib/active_record/fiber_patches.rb",
     "lib/active_record/fiber_patches/log_subscriber.rb",
+    "lib/active_record/round_robin.rb",
     "lib/active_support/cache/features/adapter_methods.rb",
     "lib/active_support/cache/memcache_connection_pool.rb",
     "lib/dalli/async_socket.rb",

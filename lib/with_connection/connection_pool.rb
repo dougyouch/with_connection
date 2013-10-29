@@ -30,17 +30,6 @@ module WithConnection
     end
     alias_method_chain :with_connection, :debug
 
-    def checkin(conn)
-      @connection_mutex.synchronize do
-        conn.send(:_run_checkin_callbacks) do
-          @connections.delete conn
-          @connections.push conn
-          @checked_out.delete conn
-          @queue.signal
-        end
-      end
-    end
-
     def checkout_with_debug
       if @debug_with_connection && ! @using_with_connection
         Rails.logger.warn "#{name} not using with_connection, backtrace: #{caller.inspect}"

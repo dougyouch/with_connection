@@ -130,10 +130,6 @@ module ActiveRecord
         connection_without_sanity_check
       end
 
-      unless Rails.env == 'production'
-        alias_method_chain :connection, :sanity_check
-      end
-
       private
 
       def current_connection_id #:nodoc:
